@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+const config = require('./config.json');
 const client = new Discord.Client();
 
 const prefix = '-';
@@ -14,28 +15,49 @@ for (const file of commandFiles)
 	client.commands.set(command.name, command)
 }
 
+
+
 client.once('ready', () => {
-	console.log('Harry is high!');
+	console.log('Hogwarts is Open!');
 });
 
 client.on('message', message =>{
 	if(!message.content.startsWith(prefix) || message.author.bot) return;
 
-	const args = message.content.slice(prefix.length).split(/ + /);
+	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
+
+	
 	 
-	if (command == 'bauispogi')
+	if (command === 'bauispogi')
 	{
 		client.commands.get('bauispogi').execute(message,args);
 	}
-	else if (command == 'maegisugli')
+	else if (command === 'cool')
 	{
-		message.channel.send('harry thinks that is true!');
+		if (!args.length) {
+			return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+		}
+		else if(args[0] === 'bau')
+		{
+			message.channel.send(`You're right, bau is cool ${message.author}!`);
+		}
+		else if (args[0] === 'maeg')
+		{
+			message.channel.send(`You're wrong, maeg isn't cool ${message.author}!`);
+		}
 	}
-	else if (command == 'maegispretti')
+	else if (command === 'welcome')
 	{
-		message.channel.send('harry thinks that is false!');
+		const exampleEmbed = new Discord.MessageEmbed()
+			.setColor('#F5D86A')
+			.setTitle('Welcome to Hogwarts')
+			.setDescription(`You are hereby accepted to the Hogwarts School of Witchcraft and Wizardry, ${message.author}!`)
+			.setImage('https://i.imgur.com/3ZwdT6N.png')
+			.setTimestamp()
+		message.channel.send(exampleEmbed);
 	}
+
 });
 
-client.login('ODQyODMxMzk5NTIxMzUzNzk5.YJ7B6A.BQ_teZM_YzV7WddqHhvlpfDOg3A');
+client.login(config.token);
