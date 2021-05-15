@@ -49,13 +49,22 @@ client.on('message', message =>{
 	}
 	else if (command === 'welcome')
 	{
-		const exampleEmbed = new Discord.MessageEmbed()
+		const welcomeLetter = new Discord.MessageEmbed()
 			.setColor('#F5D86A')
 			.setTitle('Welcome to Hogwarts')
 			.setDescription(`You are hereby accepted to the Hogwarts School of Witchcraft and Wizardry, ${message.author}!`)
 			.setImage('https://i.imgur.com/3ZwdT6N.png')
 			.setTimestamp()
-		message.channel.send(exampleEmbed);
+		message.channel.send(welcomeLetter);
+	}
+	else if (command === 'dp')
+	{
+		const avatarEmbed = new Discord.MessageEmbed()
+        	.setColor(0x333333)
+        	.setAuthor(message.author.username)
+        	.setImage(message.author.AvatarURL);
+
+		message.channel.send(avatarEmbed);
 	}
 
 });
