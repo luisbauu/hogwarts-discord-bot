@@ -2,12 +2,16 @@ const Discord = require('discord.js');
 const config = require('./config.json');
 const client = new Discord.Client();
 
+
+//// DISCORD PREFIX
 const prefix = '-';
 
 const fs = require('fs');
 
 client.commands = new Discord.Collection();
-const commandFiles = fs.readdirSync('./commands/').filter(file =>  file.endsWith('.js'));
+
+const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles)
 {
@@ -15,11 +19,15 @@ for (const file of commandFiles)
 	client.commands.set(command.name, command)
 }
 
-
-
-client.once('ready', () => {
-	console.log('Hogwarts is Open!');
-});
+for (const file of eventFiles)
+{
+	const event = require(`./events/${file}`);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args, client));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args, client));
+	} 
+}
 
 client.on('message', message =>{
 	if(!message.content.startsWith(prefix) || message.author.bot) return;
@@ -27,7 +35,6 @@ client.on('message', message =>{
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift().toLowerCase();
 
-	
 	 
 	if (command === 'bauispogi')
 	{
