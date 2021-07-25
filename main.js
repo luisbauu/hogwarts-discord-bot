@@ -44,13 +44,10 @@ client.on('guildMemberAdd', member =>{
 	.setImage('https://i.imgur.com/3ZwdT6N.png')
 	.setTimestamp()
 	
-	// user.send(welcomeLetter);
 	client.users.cache.get(member.id).send(welcomeLetter);
 
 });
 
-
-//// COMMAND HANDLER
 client.on('message', message =>{
 	if(!message.content.startsWith(prefix) || message.author.bot) return;
 
